@@ -96,10 +96,10 @@ Before running this script, you **MUST** review and potentially update the follo
 
 ---
 
-## 2. CopyQ_Helper.ahk
+## 2. CopyQ-AntiDrag-PinnedHandler.ahk
 
 **Version:** 1.0.0 (2025-06-01)
-**Script Link:** [CopyQ_Helper.ahk](CopyQ_Helper.ahk)
+**Script Link:** [CopyQ-AntiDrag-PinnedHandler.ahk](CopyQ-AntiDrag-PinnedHandler.ahk)
 
 ### Description
 
@@ -132,7 +132,7 @@ This script is generally designed to work out-of-the-box if CopyQ is installed w
 ### Usage
 
 1. Ensure AutoHotkey v2.0+ and CopyQ are installed and running.
-2. Download `CopyQ_Helper.ahk`.
+2. Download `CopyQ-AntiDrag-PinnedHandler.ahk`.
 3. Double-click the `.ahk` file to run it. The script runs in the background without a tray icon by default.
 
 ---
