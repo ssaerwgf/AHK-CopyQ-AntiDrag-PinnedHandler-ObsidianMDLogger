@@ -4,27 +4,36 @@
 
 A_TitleMatchMode := 2 ; 设置标题匹配模式为2 (部分匹配)
 
-; ======================================================================================================================
 ; Script Name:      CopyQ-AntiDrag-PinnedHandler.ahk
 ; Author:           ssaerwgf
-; Version:          1.0.0 (2025-06-01)
-; AutoHotkey:       Requires AutoHotkey v2.0 or higher
+; Version:          1.0.0
+; Last Updated:     2025-05-31
 ; License:          MIT License (https://opensource.org/licenses/MIT)
+; Repository:       https://github.com/ssaerwgf/AHK-CopyQ-AntiDrag-PinnedHandler-ObsidianMDLogger
+; Forum Thread:     https://www.autohotkey.com/boards/viewtopic.php?f=83&t=137459
 
-; Description:      An AutoHotkey v2 script providing enhancements and helper functionalities
-;                   for the CopyQ clipboard manager.
-;                   Features include:
-;                       - Simulating the disabling of CopyQ's native item drag-and-drop
-;                         functionality by sending an 'Esc' key command when a drag gesture
-;                         (left mouse button pressed and moved) is detected over a CopyQ window.
-;                       - Disabling the native Ctrl+C (copy) command when a CopyQ window is active
-;                         to prevent unintended behavior.
-;                       - Automatically handling the "Cannot remove pinned item" dialog in CopyQ
-;                         by sending 'Enter' and then a follow-up command.
-;
-; Dependencies:     - AutoHotkey v2.0+
-;                   - CopyQ Clipboard Manager (must be installed and running).
-; ======================================================================================================================
+/*
+  Description:
+    An AutoHotkey v2 script that provides enhancements and helper functionalities
+    for the CopyQ clipboard manager, improving usability for common scenarios.
+  
+  Features:
+    - "Anti-Drag": Sends an 'Esc' key command when a drag gesture (left mouse button
+      pressed and moved) is detected over a CopyQ window, preventing accidental drags.
+    - "Anti-Interference": Disables the native Ctrl+C (copy) command when a CopyQ
+      window is active to prevent unintended behavior.
+    - "Dialog Automation": Automatically handles CopyQ's "Cannot remove pinned item"
+      dialog by sending 'Enter' and a follow-up command to potentially unpin the item.
+  
+  Dependencies:
+    - AutoHotkey v2.0 or higher (Required)
+    - CopyQ Clipboard Manager (Required, must be installed and running)
+  
+  Configuration:
+    - This script is generally designed to work out-of-the-box with default CopyQ settings.
+    - Internal variables (e.g., CopyQExeName, CopyQWinClass) can be reviewed if issues arise.
+    - Refer to README.md on GitHub for any further details if needed.
+*/
 
 
 ; --- 全局配置 ---

@@ -13,7 +13,7 @@ Welcome! This repository contains a collection of AutoHotkey v2 scripts designed
 
 ## 1. Personal_Hotkeys_and_ClipboardLogger.ahk
 
-**Version:** 1.0.0 (2025-06-01)
+**Version:** 1.0.0 (2025-05-31)
 **Script Link:** [Personal_Hotkeys_and_ClipboardLogger.ahk](Personal_Hotkeys_and_ClipboardLogger.ahk)
 
 ### Description
@@ -98,7 +98,7 @@ Before running this script, you **MUST** review and potentially update the follo
 
 ## 2. CopyQ-AntiDrag-PinnedHandler.ahk
 
-**Version:** 1.0.0 (2025-06-01)
+**Version:** 1.0.0 (2025-05-31)
 **Script Link:** [CopyQ-AntiDrag-PinnedHandler.ahk](CopyQ-AntiDrag-PinnedHandler.ahk)
 
 ### Description

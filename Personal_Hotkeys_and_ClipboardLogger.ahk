@@ -4,29 +4,42 @@
 SetTitleMatchMode(2)          ; 标题匹配模式: 2 (窗口标题可以包含指定文本即可匹配)
 SendMode("Input")             ; 按键发送模式: Input (通常更可靠且速度快)
 
-; ======================================================================================================================
 ; Script Name:      Personal_Hotkeys_and_ClipboardLogger.ahk
 ; Author:           ssaerwgf
-; Version:          1.0.0 (2025-06-01)
-; AutoHotkey:       Requires AutoHotkey v2.0 or higher
+; Version:          1.0.0
+; Last Updated:     2025-05-31
 ; License:          MIT License (https://opensource.org/licenses/MIT)
+; Repository:       https://github.com/ssaerwgf/AHK-CopyQ-AntiDrag-PinnedHandler-ObsidianMDLogger
+; Forum Thread:     https://www.autohotkey.com/boards/viewtopic.php?f=83&t=137459
 
-; Description:      A comprehensive AutoHotkey v2 script designed to enhance personal productivity.
-;                   Features include:
-;                       - Custom global hotkeys for common tasks and application launching.
-;                       - Desktop environment tweaks (e.g., disabling desktop icon zoom).
-;                       - Specific application control (e.g., PotPlayer).
-;                       - Enhanced key behaviors (e.g., smooth scrolling, custom arrow key repeat).
-;                       - An advanced clipboard logger that saves history in Markdown format,
-;                         supports daily logs, path-based content filtering, and offers
-;                         integration with Obsidian via URI for quick access to logs.
-;
-; Dependencies:     - AutoHotkey v2.0+
-;                   - (Optional, for specific features) PotPlayer, CapsWriter, Obsidian.
-;                   - Users need to configure paths for external tools (CapsWriter, network .bat files)
-;                     and Obsidian integration details as per their system setup.
-;                     See README on GitHub for configuration guidance.
-; ======================================================================================================================
+/*
+  Description:
+    A comprehensive AutoHotkey v2 script designed to enhance personal productivity through
+    custom hotkeys, system tweaks, and an advanced clipboard logger with Obsidian integration.
+ 
+  Features:
+    - Custom global hotkeys for common tasks and application launching.
+    - Desktop environment tweaks (e.g., disabling desktop icon zoom).
+    - Specific application control (e.g., PotPlayer play/pause).
+    - Enhanced key behaviors (e.g., smooth scrolling with PgUp/PgDn, custom arrow key repeat).
+    - Advanced Clipboard Logger:
+      - Automatically saves copied text to Markdown files.
+      - Organizes history into daily logs (YYYY-MM-DD.md).
+      - Supports path-based content filtering (e.g., ignore specific .png paths).
+      - Offers deep integration with Obsidian via URI for quick log access from tray menu.
+  
+  Dependencies:
+    - AutoHotkey v2.0 or higher (Required)
+    - (Optional, for specific features)
+      - PotPlayer
+      - CapsWriter
+      - Obsidian (for tray menu integration)
+  
+  Configuration:
+    - CRITICAL: Users MUST configure paths for external tools (CapsWriter, network .bat files)
+      and Obsidian integration details (Vault name, Vault base path) within the script.
+    - Please see the README.md file on GitHub for detailed configuration instructions.
+*/
 
 
 ; ==============================================================================
