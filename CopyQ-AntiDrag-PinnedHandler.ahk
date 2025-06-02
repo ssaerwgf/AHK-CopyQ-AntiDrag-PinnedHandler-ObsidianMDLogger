@@ -59,32 +59,44 @@ DialogCriteria := DialogWindowTitle " " CopyQWinClass " " DialogWindowAhkExe ; �
 ; ==============================================================================
 
 MouseIsOverCopyQ() {
-    ; 显式声明对这些变量的赋值会影响全局变量
+    ; Explicitly declare globals used
     global g_lastHoverWinID
     global g_lastHoverWinIsCopyQ
+    global CopyQExeName ; <--- ***** IMPORTANT: Make global variable accessible *****
 
-    local currentHoverWinID ; 声明局部变量以接收 MouseGetPos 输出
+    local currentHoverWinID
     MouseGetPos(,, &currentHoverWinID)
 
-    ; 如果鼠标悬停在与上次相同的窗口上，则返回缓存的结果
+    ; If mouse is over the same window as last time, return cached result
     If (currentHoverWinID == g_lastHoverWinID && g_lastHoverWinID != 0) {
         Return g_lastHoverWinIsCopyQ
     }
 
-    ; 鼠标悬停在新窗口上（或首次检查），因此需要重新评估
+    ; Mouse is over a new window or first check
     g_lastHoverWinID := currentHoverWinID
+    g_lastHoverWinIsCopyQ := false ; Default to false for the new window
 
     If currentHoverWinID && DllCall("IsWindow", "Ptr", currentHoverWinID)
     {
-        local hoverWinExe := WinGetProcessName("ahk_id " currentHoverWinID)
-        If (hoverWinExe == CopyQExeName) {
-            g_lastHoverWinIsCopyQ := true
-            Return true
+        Try
+        {
+            local hoverWinExe := WinGetProcessName("ahk_id " currentHoverWinID)
+            If (hoverWinExe == CopyQExeName) {
+                g_lastHoverWinIsCopyQ := true
+            }
+            ; If not CopyQ, or if CopyQExeName was empty due to scope issue (now fixed),
+            ; g_lastHoverWinIsCopyQ remains false.
+        }
+        Catch OSError As e ; Catch potential errors, especially Access Denied
+        {
+            ; OutputDebug "WinGetProcessName failed for HWND " currentHoverWinID ". Error: " e.Message " (" e.Number ")"
+            ; If an error occurs (e.g., Access Denied), we can't get the process name.
+            ; Assume it's not CopyQ. g_lastHoverWinIsCopyQ remains false.
         }
     }
+    ; If currentHoverWinID is 0 or window is invalid, g_lastHoverWinIsCopyQ also remains false.
     
-    g_lastHoverWinIsCopyQ := false
-    Return false
+    Return g_lastHoverWinIsCopyQ
 }
 
 IsCopyQActive() {
