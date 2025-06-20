@@ -215,8 +215,7 @@ $^+a::
     If g_ctrl_shift_a_sent
         Return
     g_ctrl_shift_a_sent := True
-    Run("D:\Extratools\disposition\gateway_ip_bat\LAN_Internal.bat")
-    Run("D:\Extratools\disposition\gateway_ip_bat\WLAN_Internal.bat")
+    Run("D:\Extratools\disposition\gateway_ip_bat\Internal.bat")
 }
 $^+a Up::
 {
@@ -230,8 +229,7 @@ $^+s::
     If g_ctrl_shift_s_sent
         Return
     g_ctrl_shift_s_sent := True
-    Run("D:\Extratools\disposition\gateway_ip_bat\LAN_External.bat")
-    Run("D:\Extratools\disposition\gateway_ip_bat\WLAN_External.bat")
+    Run("D:\Extratools\disposition\gateway_ip_bat\External.bat")
 }
 $^+s Up::
 {
@@ -245,8 +243,7 @@ $^+d::
     If g_ctrl_shift_d_sent
         Return
     g_ctrl_shift_d_sent := True
-    Run("D:\Extratools\disposition\gateway_ip_bat\LAN_DHCP.bat")
-    Run("D:\Extratools\disposition\gateway_ip_bat\WLAN_DHCP.bat")
+    Run("D:\Extratools\disposition\gateway_ip_bat\DHCP.bat")
 }
 $^+d Up::
 {
