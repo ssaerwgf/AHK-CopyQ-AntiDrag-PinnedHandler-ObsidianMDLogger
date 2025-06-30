@@ -6,8 +6,8 @@ A_TitleMatchMode := 2 ; 设置标题匹配模式为2 (部分匹配)
 
 ; Script Name:      CopyQ-AntiDrag-PinnedHandler.ahk
 ; Author:           ssaerwgf
-; Version:          2.0.0
-; Last Updated:     2025-06-27
+; Version:          2.0.1
+; Last Updated:     2025-06-30
 ; License:          MIT License (https://opensource.org/licenses/MIT)
 ; Repository:       https://github.com/ssaerwgf/AHK-CopyQ-AntiDrag-PinnedHandler-ObsidianMDLogger
 ; Forum Thread:     https://www.autohotkey.com/boards/viewtopic.php?f=83&t=137459
@@ -38,10 +38,7 @@ A_TitleMatchMode := 2 ; 设置标题匹配模式为2 (部分匹配)
     - "Seamless Focus Management": Proactively prevents CopyQ from stealing focus. After closing
       CopyQ, the script intelligently restores focus to the last active window, ensuring an
       uninterrupted workflow.
-
-    - "Click Rate-Limiting": Includes a built-in click cooldown to prevent unintended actions
-      caused by accidental double-clicks or rapid mouse inputs.
-    
+   
     - "Status Notification System": Provides feedback on the protection mode's status (e.g.,
       'Enabled', 'Disabled for this session') via unobtrusive tooltips, keeping the user
       informed of the script's current state.
@@ -86,10 +83,6 @@ global g_ProtectionEnabled := false   ; 保护功能状态（默认关闭）
 global g_SessionProtectionLocked := false ; 本次会话保护是否被锁定（右键点击后）
 global g_FirstClickInSession := true  ; 是否是本次会话的第一次点击
 global g_CurrentSessionID := 0         ; 当前会话ID
-
-; --- 点击速率限制配置 ---
-global g_LastClickTime := 0          ; 上次点击时间
-global ClickCooldownMs := 200        ; 点击冷却时间（毫秒）
 
 ; ==============================================================================
 ; 初始化
@@ -283,15 +276,7 @@ MouseIsOverCopyQ() {
     if (!CopyQExists) {
         return
     }
-    
-    ; 实施点击速率限制
-    currentTime := A_TickCount
-    if (currentTime - g_LastClickTime < ClickCooldownMs) {
-        ; 阻止过快的点击
-        return
-    }
-    g_LastClickTime := currentTime
-    
+      
     ; 获取点击位置
     MouseGetPos(,, &ClickedWinID)
     if (!ClickedWinID) {
@@ -367,14 +352,7 @@ $LButton::
 {
     global g_LastClickTime, ClickCooldownMs
     global g_FirstClickInSession, g_SessionProtectionLocked, g_ProtectionEnabled
-    
-    ; 速率限制检查
-    currentTime := A_TickCount
-    if (currentTime - g_LastClickTime < ClickCooldownMs) {
-        return
-    }
-    g_LastClickTime := currentTime
-    
+     
     ; 处理首次点击逻辑
     if (g_FirstClickInSession && !g_SessionProtectionLocked) {
         g_ProtectionEnabled := true
