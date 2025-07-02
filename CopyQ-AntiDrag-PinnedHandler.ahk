@@ -6,8 +6,8 @@ A_TitleMatchMode := 2 ; 设置标题匹配模式为2 (部分匹配)
 
 ; Script Name:      CopyQ-AntiDrag-PinnedHandler.ahk
 ; Author:           ssaerwgf
-; Version:          2.0.1
-; Last Updated:     2025-06-30
+; Version:          2.0.2
+; Last Updated:     2025-07-02
 ; License:          MIT License (https://opensource.org/licenses/MIT)
 ; Repository:       https://github.com/ssaerwgf/AHK-CopyQ-AntiDrag-PinnedHandler-ObsidianMDLogger
 ; Forum Thread:     https://www.autohotkey.com/boards/viewtopic.php?f=83&t=137459
@@ -262,7 +262,7 @@ MouseIsOverCopyQ() {
 }
 
 ; ==============================================================================
-; 全局左键处理 - 包含速率限制和智能关闭
+; 全局左键处理
 ; ==============================================================================
 
 ~LButton::
@@ -344,7 +344,7 @@ CloseCopyQDelayed() {
 #HotIf
 
 ; ==============================================================================
-; 防拖拽功能（保持原有逻辑）
+; 防拖拽功能
 ; ==============================================================================
 
 #HotIf MouseIsOverCopyQ()
@@ -412,7 +412,7 @@ $LButton::
 #HotIf
 
 ; ==============================================================================
-; 后台对话框处理（极速版 - 修正变量名冲突）
+; 后台对话框处理
 ; ==============================================================================
 
 Loop {
