@@ -137,6 +137,40 @@ This script is generally designed to work out-of-the-box if CopyQ is installed w
 
 ---
 
+# InputGuardian Plugin for InputTip
+
+A powerful productivity plugin that extends [InputTip](https://github.com/abgox/InputTip) with intelligent text versioning and clipboard history management.
+
+## About
+
+InputGuardian is a plugin for InputTip that adds two major features:
+- **Text Version Control**: Automatically saves snapshots of your text input
+- **Clipboard History**: Maintains a searchable log of everything you copy
+
+## Requirements
+
+- [AutoHotkey v2.0+](https://www.autohotkey.com/)
+- [InputTip v2.39.0+](https://github.com/abgox/InputTip)
+- [CopyQ](https://hluk.github.io/CopyQ/) (Optional, for enhanced clipboard management)
+
+## Installation
+
+[详细安装步骤]
+
+## Configuration
+
+[配置说明]
+
+## Acknowledgments
+
+This plugin is built upon the excellent [InputTip](https://github.com/abgox/InputTip) project by [abgox](https://github.com/abgox). InputTip provides the essential foundation for caret detection and window management that makes this plugin possible.
+
+## License
+
+MIT License - See LICENSE file for details
+
+---
+
 ## Contribution
 
 Feel free to fork this repository, submit pull requests, or open issues for bugs, suggestions, or feature requests.

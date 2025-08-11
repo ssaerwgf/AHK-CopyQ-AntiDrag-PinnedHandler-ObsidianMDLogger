@@ -14,45 +14,53 @@ A_TitleMatchMode := 2 ; 设置标题匹配模式为2 (部分匹配)
 
 /*
   Description:
-    An AutoHotkey v2 script that provides enhancements and helper functionalities
-    for the CopyQ clipboard manager, improving usability for common scenarios.
-  
+    An AutoHotkey v2 script designed to streamline interaction with the CopyQ clipboard
+    manager. It focuses on preventing common annoyances like accidental drags and provides
+    multiple "hands-off" methods for closing the window, such as clicking away, moving
+    the mouse off the window, or pressing almost any key.
+
   Features:
-    - "Anti-Drag": Sends an 'Esc' key command when a drag gesture (left mouse button
-      pressed and moved) is detected over a CopyQ window, preventing accidental drags.
+    - "Anti-Drag": Prevents accidental dragging of items within the CopyQ window by sending
+      an 'Esc' key command as soon as a drag gesture is detected.
 
     - "Dialog Automation": Automatically handles CopyQ's "Cannot remove pinned item"
-      dialog by sending 'Enter' and a follow-up command to potentially unpin the item.
+      dialog by dismissing it with 'Enter' and immediately closing the main CopyQ window.
 
-    - "Auto-Close on Click-Away": Automatically closes the CopyQ window when the user clicks
-      anywhere outside of it, helping to keep the workspace tidy.
+    - "Auto-Close on Click-Away": Closes the CopyQ window instantly when you click anywhere
+      outside of it, keeping your workspace clean.
 
-    - "Dynamic Protection Mode": Features an intelligent protection system. After CopyQ is
-      launched, the user's first click automatically activates the protection mode, enabling
-      core features like Anti-Drag and Focus Redirection.
+    - "Auto-Close on Mouse-Leave": When protection mode is active, the script automatically
+      closes the CopyQ window shortly after the mouse cursor moves away from it.
 
-    - "Session-Level Protection Toggle": Allows the user to 'permanently' disable protection
-      mode for the current session with a single right-click on the CopyQ window. This makes
-      it easy to change settings or perform other direct interactions without script interference.
+    - "Keyboard-Triggered Close": While the mouse is over the CopyQ window in protected mode,
+      pressing almost any key (letters, numbers, space, etc.) will instantly close it,
+      providing another rapid dismissal method.
 
-    - "Seamless Focus Management": Proactively prevents CopyQ from stealing focus. After closing
-      CopyQ, the script intelligently restores focus to the last active window, ensuring an
-      uninterrupted workflow.
-   
-    - "Status Notification System": Provides feedback on the protection mode's status (e.g.,
-      'Enabled', 'Disabled for this session') via unobtrusive tooltips, keeping the user
-      informed of the script's current state.
-  
+    - "Dynamic Protection Mode": An intelligent system where protection features (like Anti-Drag
+      and auto-closing) are disabled by default. The first click on the CopyQ window after it
+      appears automatically activates protection for that session.
+
+    - "Session-Level Protection Toggle": A single right-click on the CopyQ window permanently
+      disables protection mode for the current session, allowing you to easily change
+      settings or perform other direct interactions without script interference.
+
+    - "Active Focus Redirection": Proactively redirects focus away from the CopyQ window back
+      to your last-used application, ensuring CopyQ never holds focus and your workflow
+      remains uninterrupted.
+
+    - "Status Notification System": Provides clear feedback on the protection mode's status
+      (e.g., 'Enabled', 'Disabled for this session') via unobtrusive tooltips, keeping
+      you informed of the script's current state.
+
   Dependencies:
     - AutoHotkey v2.0 or higher (Required)
     - CopyQ Clipboard Manager (Required, must be installed and running)
-  
+
   Configuration:
     - This script is generally designed to work out-of-the-box with default CopyQ settings.
     - Internal variables (e.g., CopyQExeName, CopyQWinClass) can be reviewed if issues arise.
     - Refer to README.md on GitHub for any further details if needed.
 */
-
 
 ; --- 全局配置 ---
 global CopyQExeName := "copyq.exe"
