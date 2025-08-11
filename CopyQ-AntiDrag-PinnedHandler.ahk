@@ -6,8 +6,8 @@ A_TitleMatchMode := 2 ; 设置标题匹配模式为2 (部分匹配)
 
 ; Script Name:      CopyQ-AntiDrag-PinnedHandler.ahk
 ; Author:           ssaerwgf
-; Version:          2.0.2
-; Last Updated:     2025-07-02
+; Version:          2.0.3
+; Last Updated:     2025-08-11
 ; License:          MIT License (https://opensource.org/licenses/MIT)
 ; Repository:       https://github.com/ssaerwgf/AHK-CopyQ-AntiDrag-PinnedHandler-ObsidianMDLogger
 ; Forum Thread:     https://www.autohotkey.com/boards/viewtopic.php?f=83&t=137459
@@ -84,6 +84,15 @@ global g_SessionProtectionLocked := false ; 本次会话保护是否被锁定（
 global g_FirstClickInSession := true  ; 是否是本次会话的第一次点击
 global g_CurrentSessionID := 0         ; 当前会话ID
 
+; --- 鼠标离开自动关闭配置 ---
+global g_MouseLeaveTimer := 0          ; 鼠标离开监控定时器
+global g_LastMouseOverState := false   ; 上一次的鼠标悬停状态
+global MouseLeaveCheckInterval := 100  ; 鼠标离开检查间隔（毫秒）
+global MouseLeaveCloseDelay := 200     ; 鼠标离开后的关闭延迟（毫秒）
+
+global g_LastClickTime := 0        ; 上次点击时间
+global ClickCooldownMs := 100      ; 点击冷却时间（毫秒）
+
 ; ==============================================================================
 ; 初始化
 ; ==============================================================================
@@ -125,10 +134,45 @@ RecordCurrentValidWindow() {
     }
 }
 
+; 监控鼠标离开CopyQ窗口
+MonitorMouseLeaveCopyQ() {
+    global g_ProtectionEnabled, g_LastMouseOverState, MouseLeaveCloseDelay
+
+    ; 额外检查CopyQ窗口是否存在
+    if (!g_ProtectionEnabled || !WinExist("ahk_exe " CopyQExeName)) {
+        g_LastMouseOverState := false
+        return
+    }
+    
+    ; 只在保护模式开启时工作
+    if (!g_ProtectionEnabled) {
+        g_LastMouseOverState := false
+        return
+    }
+    
+    ; 获取当前鼠标是否在CopyQ上
+    currentMouseOver := MouseIsOverCopyQ()
+    
+    ; 检测从"在CopyQ上"到"不在CopyQ上"的状态转换
+    if (g_LastMouseOverState && !currentMouseOver) {
+        ; 鼠标刚刚离开CopyQ窗口
+        ; 使用带延迟的关闭，给用户一点反应时间
+        SetTimer(CloseCopyQDelayed, -MouseLeaveCloseDelay)
+        
+        ; 可选：显示提示
+        ToolTip("鼠标离开 - 自动关闭CopyQ")
+        SetTimer(() => ToolTip(), -1000)
+    }
+    
+    ; 更新状态
+    g_LastMouseOverState := currentMouseOver
+}
+
 ; 监控CopyQ的存在并管理会话状态
 MonitorCopyQPresence() {
     global g_FocusRedirectActive, g_CopyQMonitorTimer, CopyQExeName, FocusCheckInterval
     global g_CurrentSessionID, g_FirstClickInSession, g_SessionProtectionLocked, g_ProtectionEnabled
+    global g_MouseLeaveTimer, g_LastMouseOverState, MouseLeaveCheckInterval
     
     static lastCopyQState := false
     currentCopyQState := WinExist("ahk_exe " CopyQExeName) ? true : false
@@ -152,6 +196,17 @@ MonitorCopyQPresence() {
             g_FocusRedirectActive := true
             g_CopyQMonitorTimer := SetTimer(RedirectFocusFromCopyQ, FocusCheckInterval)
         }
+        
+        ; 新增：管理鼠标离开监控定时器
+        if (g_ProtectionEnabled && !g_MouseLeaveTimer) {
+            ; 保护模式开启且定时器未运行，启动鼠标离开监控
+            g_MouseLeaveTimer := SetTimer(MonitorMouseLeaveCopyQ, MouseLeaveCheckInterval)
+        } else if (!g_ProtectionEnabled && g_MouseLeaveTimer) {
+            ; 保护模式关闭但定时器还在运行，停止监控
+            SetTimer(g_MouseLeaveTimer, 0)
+            g_MouseLeaveTimer := 0
+            g_LastMouseOverState := false
+        }
     } else {
         if (g_FocusRedirectActive) {
             g_FocusRedirectActive := false
@@ -159,6 +214,13 @@ MonitorCopyQPresence() {
                 SetTimer(g_CopyQMonitorTimer, 0)
                 g_CopyQMonitorTimer := 0
             }
+        }
+        
+        ; 新增：CopyQ关闭时，同时停止鼠标离开监控
+        if (g_MouseLeaveTimer) {
+            SetTimer(g_MouseLeaveTimer, 0)
+            g_MouseLeaveTimer := 0
+            g_LastMouseOverState := false
         }
     }
     
@@ -270,6 +332,7 @@ MouseIsOverCopyQ() {
     global CopyQExeName, g_LastValidWindow
     global g_LastClickTime, ClickCooldownMs
     global g_FirstClickInSession, g_SessionProtectionLocked, g_ProtectionEnabled
+    global g_MouseLeaveTimer, MouseLeaveCheckInterval, CopyQExeName
     
     ; 检查CopyQ是否存在
     CopyQExists := WinExist("ahk_exe " CopyQExeName)
@@ -277,6 +340,11 @@ MouseIsOverCopyQ() {
         return
     }
       
+    ; 如果鼠标在CopyQ上，让条件热键处理
+    if (MouseIsOverCopyQ()) {
+        return
+    }
+
     ; 获取点击位置
     MouseGetPos(,, &ClickedWinID)
     if (!ClickedWinID) {
@@ -292,6 +360,11 @@ MouseIsOverCopyQ() {
                 ; 这是本会话的第一次点击，开启保护
                 g_ProtectionEnabled := true
                 g_FirstClickInSession := false
+                
+                ; 新增：立即启动鼠标离开监控
+                if (!g_MouseLeaveTimer && WinExist("ahk_exe " CopyQExeName)) {
+                    g_MouseLeaveTimer := SetTimer(MonitorMouseLeaveCopyQ, MouseLeaveCheckInterval)
+                }
                 
                 ToolTip("保护模式已自动开启`n右键点击可永久关闭")
                 SetTimer(() => ToolTip(), -2000)
@@ -330,12 +403,19 @@ CloseCopyQDelayed() {
 #HotIf MouseIsOverCopyQ()
 ~RButton::
 {
-    global g_SessionProtectionLocked, g_ProtectionEnabled
+    global g_SessionProtectionLocked, g_ProtectionEnabled, g_MouseLeaveTimer, g_LastMouseOverState
     
     if (!g_SessionProtectionLocked) {
         ; 锁定本会话的保护功能为关闭状态
         g_SessionProtectionLocked := true
         g_ProtectionEnabled := false
+        
+        ; 新增：停止鼠标离开监控
+        if (g_MouseLeaveTimer) {
+            SetTimer(g_MouseLeaveTimer, 0)
+            g_MouseLeaveTimer := 0
+            g_LastMouseOverState := false
+        }
         
         ToolTip("本次会话保护已永久关闭`n可以正常操作CopyQ设置")
         SetTimer(() => ToolTip(), -3000)
@@ -352,11 +432,17 @@ $LButton::
 {
     global g_LastClickTime, ClickCooldownMs
     global g_FirstClickInSession, g_SessionProtectionLocked, g_ProtectionEnabled
+    global g_MouseLeaveTimer, MouseLeaveCheckInterval, CopyQExeName
      
     ; 处理首次点击逻辑
     if (g_FirstClickInSession && !g_SessionProtectionLocked) {
         g_ProtectionEnabled := true
         g_FirstClickInSession := false
+        
+        ; 新增：立即启动鼠标离开监控（与第338行保持一致）
+        if (!g_MouseLeaveTimer && WinExist("ahk_exe " CopyQExeName)) {
+            g_MouseLeaveTimer := SetTimer(MonitorMouseLeaveCopyQ, MouseLeaveCheckInterval)
+        }
         
         ToolTip("保护模式已自动开启`n右键点击可永久关闭")
         SetTimer(() => ToolTip(), -2000)
@@ -410,6 +496,175 @@ $LButton::
     Return
 }
 #HotIf
+
+
+; ==============================================================================
+; 键盘按键自动关闭功能（保护模式下）
+; ==============================================================================
+
+; 创建一个辅助函数来判断是否应该响应键盘按键
+IsCopyQHoveredAndProtected() {
+    global g_ProtectionEnabled
+    
+    ; 必须同时满足：保护模式开启 且 鼠标在CopyQ窗口上
+    if (!g_ProtectionEnabled) {
+        return false
+    }
+    
+    ; 使用已有的鼠标检测函数
+    return MouseIsOverCopyQ()
+}
+
+; 处理键盘按键的通用函数
+HandleProtectedKeyPress() {
+    global CopyQExeName
+    
+    ; 显示简短提示（可选）
+    ToolTip("按键触发 - 关闭CopyQ")
+    SetTimer(() => ToolTip(), -500)
+    
+    ; 使用已有的延迟关闭函数
+    CloseCopyQDelayed()
+}
+
+; 使用条件热键 - 只在CopyQ活动且保护模式开启时生效
+#HotIf IsCopyQHoveredAndProtected()
+
+; 字母键 A-Z
+*a::
+*b::
+*c::
+*d::
+*e::
+*f::
+*g::
+*h::
+*i::
+*j::
+*k::
+*l::
+*m::
+*n::
+*o::
+*p::
+*q::
+*r::
+*s::
+*t::
+*u::
+*v::
+*w::
+*x::
+*y::
+*z::
+{
+    HandleProtectedKeyPress()
+    return
+}
+
+; 数字键 0-9
+*0::
+*1::
+*2::
+*3::
+*4::
+*5::
+*6::
+*7::
+*8::
+*9::
+{
+    HandleProtectedKeyPress()
+    return
+}
+
+; 功能键 F1-F12
+*F1::
+*F2::
+*F3::
+*F4::
+*F5::
+*F6::
+*F7::
+*F8::
+*F9::
+*F10::
+*F11::
+*F12::
+{
+    HandleProtectedKeyPress()
+    return
+}
+
+; 常用特殊键
+*Space::
+*Enter::
+*Tab::
+*BackSpace::
+*Insert::
+*Home::
+*End::
+*PgUp::
+*PgDn::
+{
+    HandleProtectedKeyPress()
+    return
+}
+
+; 方向键
+*Up::
+*Down::
+*Left::
+*Right::
+{
+    HandleProtectedKeyPress()
+    return
+}
+
+; 符号键
+*`::
+*-::
+*=::
+*[::
+*]::
+*\::
+*`;::
+*'::
+*,::
+*.::
+*/::
+{
+    HandleProtectedKeyPress()
+    return
+}
+
+; 小键盘数字键
+*Numpad0::
+*Numpad1::
+*Numpad2::
+*Numpad3::
+*Numpad4::
+*Numpad5::
+*Numpad6::
+*Numpad7::
+*Numpad8::
+*Numpad9::
+{
+    HandleProtectedKeyPress()
+    return
+}
+
+; Escape键（可选 - 用户可能想手动关闭）
+*Escape::
+{
+    HandleProtectedKeyPress()
+    return
+}
+
+; 注意：Delete键被故意排除，保留其原有功能
+
+#HotIf  ; 结束条件区域
+
 
 ; ==============================================================================
 ; 后台对话框处理
