@@ -1,176 +1,335 @@
-# ssaerwgf's AutoHotkey v2 Productivity Scripts
+# AutoHotkey v2 Productivity Suite
 
-Welcome! This repository contains a collection of AutoHotkey v2 scripts designed to enhance productivity and streamline common tasks on Windows.
+A comprehensive collection of AutoHotkey v2 scripts designed to enhance Windows productivity through intelligent automation, clipboard management, and input monitoring.
 
-**Author:** ssaerwgf
-**License:** [MIT License](LICENSE) (Applies to all scripts in this repository)
+**Author:** ssaerwgf  
+**License:** [MIT License](LICENSE)  
+**Repository:** [https://github.com/ssaerwgf/AHK-CopyQ-AntiDrag-PinnedHandler-ObsidianMDLogger](https://github.com/ssaerwgf/AHK-CopyQ-AntiDrag-PinnedHandler-ObsidianMDLogger)  
+**Forum Thread:** [AutoHotkey Community](https://www.autohotkey.com/boards/viewtopic.php?f=83&t=137459)
 
-## General Requirements
+## 🎯 Overview
 
-* **AutoHotkey v2.0 or higher:** All scripts require a compatible version of AutoHotkey to be installed. You can download it from [autohotkey.com](https://www.autohotkey.com/).
+This repository contains three powerful AutoHotkey v2 scripts that work together to create a seamless productivity enhancement system:
+
+1. **Base_logi.ahk** - Core productivity automation and hotkey management
+2. **CopyQ-AntiDrag-PinnedHandler.ahk** - Enhanced CopyQ clipboard manager integration
+3. **InputGuardian-InputTip-plugin.ahk** - Advanced text input versioning and clipboard history
+
+## 📋 General Requirements
+
+* **AutoHotkey v2.0 or higher** (Required) - Download from [autohotkey.com](https://www.autohotkey.com/)
+* **Windows 10/11** (Recommended for full feature compatibility)
 
 ---
 
-## 1. Personal_Hotkeys_and_ClipboardLogger.ahk
+## 1. Base_logi.ahk - Core Productivity System
 
-**Version:** 1.0.0 (2025-05-31)
-**Script Link:** [Personal_Hotkeys_and_ClipboardLogger.ahk](Personal_Hotkeys_and_ClipboardLogger.ahk)
+**Version:** 1.0.0  
+**Last Updated:** 2025-08-11  
+**Script Link:** [Base_logi.ahk](Base_logi.ahk)
 
 ### Description
 
-A comprehensive AutoHotkey v2 script designed to enhance personal productivity. It features custom global hotkeys, desktop environment tweaks, specific application control, enhanced key behaviors, and an advanced clipboard logger with Markdown formatting and Obsidian integration.
+The foundation script that provides comprehensive system automation, custom hotkeys, and application management. It serves as the core of your productivity enhancement system.
 
-### Key Features
+### ✨ Key Features
 
-* **Desktop Environment Tweaks:**
-  * Disables desktop icon zooming via `Ctrl + Mouse Wheel` when the desktop is active.
-* **Custom Global Hotkeys (Single-fire, press-and-hold does not repeat action unless specified):**
-  * `PrintScreen`: Remapped to send `Ctrl+Shift+Alt+P`.
-  * `F24`: Remapped to send `Ctrl+Shift+Alt+L`.
-  * `Shift + Z` (Context-sensitive): Triggers file/folder rename in File Explorer or on the Desktop.
-  * `Ctrl + /`: Sends `Ctrl+N`.
-  * `Ctrl + Shift + Z`: Launches CapsWriter server and client, then sends `Alt+Space, n` twice.
-  * `Ctrl + Shift + X`: Sends `Alt+Space, n` (typically minimizes the active window).
-  * `Ctrl + O`: Sends `Ctrl+Alt+Shift+O`.
-  * **Network Configuration Switching:**
-    * `Ctrl + Shift + A`: Runs `Internal.bat` for internal network settings.
-    * `Ctrl + Shift + S`: Runs `External.bat` for external network settings.
-    * `Ctrl + Shift + D`: Runs `DHCP.bat` to switch to DHCP.
-  * **Common Editing Hotkeys (Single-fire):**
-    * `Enter`: Sends `Enter`.
-    * `Ctrl + S`: Sends `Ctrl+S` (Save).
-    * `Ctrl + V`: Sends `Ctrl+V` (Paste).
-    * `Ctrl + C`: Sends `Ctrl+C` (Copy).
-    * `Ctrl + A`: Sends `Ctrl+A` (Select All).
-* **Specific Application Control:**
-  * `Alt + .` (Period): Sends Play/Pause command to all open PotPlayer64 windows.
-* **Enhanced Key Behaviors:**
-  * **Smooth Scrolling:** `PgUp`/`PgDn` keys provide smooth, continuous scrolling when held down. Scroll speed is configurable within the script.
-  * **Custom Arrow Key Repeat:** `Left`/`Right` arrow keys have a custom repeat rate when held down. Repeat interval is configurable.
-* **Advanced Clipboard Logger:**
-  * **Markdown Formatting:** Saves clipboard history as Markdown files.
-  * **Daily Logs:** Creates a new log file for each day in a `History` subfolder (e.g., `YYYY-MM-DD.md`).
-  * **Session Log:** Maintains a `Clipboard_CurrentSession.md` log for the current script session.
-  * **Path-Based Content Filtering:** Ignores clipboard entries that are specific `.png` file paths matching predefined prefixes (useful for screenshot tool temporary files).
-  * **Content Deduplication:** Avoids logging identical consecutive clipboard entries.
-  * **Minimum Length Filter:** Ignores very short clipboard entries.
-  * **Timestamping:** Optionally logs the time of copy for each entry.
-  * **Obsidian Integration:**
-    * Tray menu options to open the current session log or today's history log directly in Obsidian using `obsidian://` URI.
-    * Tray menu option to open the `History` folder.
-  * **Customizable Tray Icon and Menu.**
+* **🚀 Automated Application Management**
+  * Auto-starts PasteEx on script launch with robust error handling
+  * Delayed auto-start for CapsWriter (5 seconds after script initialization)
+  * Intelligent process integrity checking and recovery
 
-### Dependencies
+* **🎮 Desktop Environment Tweaks**
+  * Disables accidental desktop icon zooming (`Ctrl + Mouse Wheel`)
+  * Prevents unintended desktop interactions
 
-* AutoHotkey v2.0+
-* **(Optional, for specific features):**
-  * PotPlayer (for `Alt + .` hotkey)
-  * CapsWriter (for `Ctrl + Shift + Z` hotkey)
-  * Obsidian (for direct log opening from tray menu)
+* **⌨️ Custom Global Hotkeys** (Single-fire mechanism prevents repeat on hold)
+  * `PrintScreen` → `Ctrl+Shift+Alt+P`
+  * `F21` → `Shift+Enter`
+  * `F22` → `Ctrl+F` (Find)
+  * `F23` → `Ctrl+N` (New)
+  * `F24` → Toggle CapsWriter visibility
+  * `Ctrl+Shift+Z` → Minimize window
+  * `Ctrl+Shift+X` → Context-sensitive rename (Explorer/Desktop)
+  * `Ctrl+O` → `Ctrl+Alt+Shift+O`
+  
+* **🌐 Network Profile Switching**
+  * `Ctrl+Shift+A` → Internal network configuration
+  * `Ctrl+Shift+S` → External network configuration
+  * `Ctrl+Shift+D` → DHCP configuration
 
-### Configuration (Important!)
+* **🎬 Application-Specific Controls**
+  * `Alt+.` → Play/Pause all PotPlayer instances without focusing
 
-Before running this script, you **MUST** review and potentially update the following sections within the script file (`Personal_Hotkeys_and_ClipboardLogger.ahk`):
+* **🖱️ Enhanced Input Behaviors**
+  * **Smooth Scrolling**: `PgUp`/`PgDn` provide butter-smooth continuous scrolling
+  * **Custom Arrow Repeat**: Configurable repeat rate for `Left`/`Right` arrows
+  * **Single-fire Protection**: Common shortcuts (`Enter`, `Ctrl+S/V/C/A`) protected from accidental repeats
 
-1. **External Tool Paths:**
-   * Search for `Run("D:\Extratools\CapsWriter-Offline-Windows-64bit\start_server.exe")` and similar lines for `CapsWriter` and the network `.bat` files (`Internal.bat`, `External.bat`, `DHCP.bat`). Update these paths to match your system.
-2. **Clipboard Logger - Path Blocking:**
-   * Search for `local pathToBlock1_Prefix := "D:\005_tools\PixPin\Temp\PixPin_"` and similar.
-   * Adjust these `pathToBlockX_Prefix` variables and `targetExtension_WithDot` if you use different screenshot tools or want to block other specific file paths from being logged.
-3. **Clipboard Logger - Obsidian Integration:**
-   * Search for `Global ObsidianVaultName := "AutoHotkeypeizhi"`. **Change this to your Obsidian vault's name.**
-   * Search for `Global ObsidianVaultBasePath := "D:\Extratools\disposition\AutoHotkeypeizhi"`. **Change this to the absolute path of your Obsidian vault's root folder.** Ensure there is no trailing backslash.
-   * **Crucial:** The script assumes that the `History` folder and `Clipboard_CurrentSession.md` file (created by the script in its own directory) will reside *within* your Obsidian vault structure if you want the "Open in Obsidian" functionality to work seamlessly. If your script directory is outside your vault, you may need to adjust how `relativeFilePath` is calculated in `ViewSessionLogInObsidian_MenuHandler` and `OpenTodayLogInObsidian_MenuHandler` or ensure the `HistoryBaseFolderName` and `SessionLogFileName` point to locations inside your vault.
-4. **Other Clipboard Logger Settings (Optional Customization):**
-   * `HistoryBaseFolderName`, `SessionLogFileName`, `LogTimestampsInEntry`, `EntryTimestampFormat`, `MinCharsToLog`.
-5. **Smooth Scrolling / Arrow Key Repeat (Optional Customization):**
-   * `scrollInterval` for `PgUp`/`PgDn`.
-   * `seekInterval` for `Left`/`Right` arrow keys.
+### 🔧 Configuration
 
-### Usage
+**CRITICAL**: Update these paths in the script before running:
 
-1. Ensure AutoHotkey v2.0+ is installed.
-2. Download `Personal_Hotkeys_and_ClipboardLogger.ahk`.
-3. **Carefully review and perform the necessary configurations mentioned above.**
-4. Double-click the `.ahk` file to run it. A tray icon will appear, providing access to clipboard logger functions.
+1. **PasteEx Path** (Line ~56):
+   ```autohotkey
+   Global PASTEEX_PATH := "D:\Extratools\PasteEx\PasteEx.exe"
+   ```
+
+2. **CapsWriter Path** (Line ~134):
+   ```autohotkey
+   Global CAPSWRITER_PATH := "D:\Extratools\CapsWriter-Offline-Windows-64bit\"
+   ```
+
+3. **Network Batch Files** (Lines ~573-589):
+   ```autohotkey
+   Run("D:\Extratools\disposition\gateway_ip_bat\Internal.bat")
+   Run("D:\Extratools\disposition\gateway_ip_bat\External.bat")
+   Run("D:\Extratools\disposition\gateway_ip_bat\DHCP.bat")
+   ```
+
+4. **Scrolling & Key Repeat** (Optional):
+   ```autohotkey
+   Global scrollInterval := 120  ; Smooth scroll speed (ms)
+   Global seekInterval := 600    ; Arrow key repeat interval (ms)
+   ```
+
+### 📦 Dependencies
+
+* **Required**: AutoHotkey v2.0+
+* **Optional** (for specific features):
+  * PasteEx - Enhanced paste functionality
+  * CapsWriter - Advanced text input
+  * PotPlayer - Media control features
+  * Network configuration batch files
 
 ---
 
-## 2. CopyQ-AntiDrag-PinnedHandler.ahk
+## 2. CopyQ-AntiDrag-PinnedHandler.ahk - Intelligent Clipboard Management
 
-**Version:** 1.0.0 (2025-05-31)
+**Version:** 2.0.3  
+**Last Updated:** 2025-08-11  
 **Script Link:** [CopyQ-AntiDrag-PinnedHandler.ahk](CopyQ-AntiDrag-PinnedHandler.ahk)
 
 ### Description
 
-An AutoHotkey v2 script providing enhancements and helper functionalities for the CopyQ clipboard manager.
+An intelligent enhancement layer for CopyQ clipboard manager that prevents common annoyances and provides multiple "hands-off" methods for window management.
 
-### Key Features
+### ✨ Key Features
 
-* **Simulate Drag-Disable for CopyQ Items:**
-  * When the mouse cursor is over a CopyQ window, pressing and dragging the left mouse button beyond a small threshold will send an `Esc` key command to the CopyQ window. This can prevent accidental item dragging or close pop-up menus/previews within CopyQ.
-* **Disable `Ctrl+C` in Active CopyQ:**
-  * Prevents the native `Ctrl+C` (copy) command from functioning when a CopyQ window is the active window. This can avoid unintended interactions if `Ctrl+C` has special meaning within CopyQ or to prevent copying items from CopyQ back into CopyQ itself accidentally.
-* **Auto-handle "Cannot Remove Pinned Item" Dialog:**
-  * Automatically detects and handles the "Cannot remove pinned item" dialog box in CopyQ.
-  * It sends `Enter` to dismiss the dialog, then sends `Alt+Space, c` (a common sequence to trigger CopyQ's "Clear" or similar action on the selected item after the dialog, effectively attempting to unpin and then potentially remove).
+* **🛡️ Dynamic Protection Mode**
+  * Protection disabled by default for each new CopyQ session
+  * First click automatically activates protection
+  * Right-click permanently disables protection for current session
 
-### Dependencies
+* **🚫 Anti-Drag Protection**
+  * Prevents accidental item dragging within CopyQ
+  * Sends `Esc` when drag gesture detected (configurable threshold)
 
-* AutoHotkey v2.0+
-* CopyQ Clipboard Manager (must be installed and running).
+* **🔄 Smart Auto-Close Behaviors**
+  * **Click-Away**: Instantly closes when clicking outside CopyQ
+  * **Mouse-Leave**: Auto-closes after cursor leaves window (200ms delay)
+  * **Keyboard Trigger**: Press any key while hovering to close
+  * **Dialog Automation**: Handles "Cannot remove pinned item" dialogs automatically
 
-### Configuration (Mostly Internal)
+* **🎯 Focus Management**
+  * Proactively redirects focus to last active application
+  * Ensures CopyQ never steals focus from your workflow
+  * Maintains workspace continuity
 
-This script is generally designed to work out-of-the-box if CopyQ is installed with default settings. However, you can review these variables at the top of the script if needed:
+* **💬 Status Notification System**
+  * Non-intrusive tooltips for protection status
+  * Clear feedback on mode changes
+  * Visual confirmation of actions
 
-* `CopyQExeName`: Default is `copyq.exe`.
-* `CopyQWinClass`: Default is `ahk_class Qt653QWindowIcon`. This might change with CopyQ versions. Use Window Spy (comes with AutoHotkey) to verify if issues arise.
-* `DragThreshold`, `DragCheckPollInterval`: For the LButton drag feature.
-* `DialogWindowTitle`: The exact title of the dialog to be handled.
+### 🔧 Configuration
 
-### Usage
+The script works out-of-the-box with default CopyQ settings. Advanced users can adjust:
 
-1. Ensure AutoHotkey v2.0+ and CopyQ are installed and running.
-2. Download `CopyQ-AntiDrag-PinnedHandler.ahk`.
-3. Double-click the `.ahk` file to run it. The script runs in the background without a tray icon by default.
+```autohotkey
+; Core detection
+global CopyQExeName := "copyq.exe"
+global CopyQWinClass := "ahk_class Qt653QWindowIcon"
 
----
+; Anti-drag sensitivity
+global DragThreshold := 10           ; Pixels before drag detected
+global DragCheckPollInterval := 15   ; Check interval (ms)
 
-# InputGuardian Plugin for InputTip
+; Auto-close timing
+global MouseLeaveCloseDelay := 200   ; Delay after mouse leaves (ms)
+global FocusCheckInterval := 50      ; Focus redirect check (ms)
+```
 
-A powerful productivity plugin that extends [InputTip](https://github.com/abgox/InputTip) with intelligent text versioning and clipboard history management.
+### 📦 Dependencies
 
-## About
+* **Required**: 
+  * AutoHotkey v2.0+
+  * CopyQ Clipboard Manager
 
-InputGuardian is a plugin for InputTip that adds two major features:
-- **Text Version Control**: Automatically saves snapshots of your text input
-- **Clipboard History**: Maintains a searchable log of everything you copy
+### 💡 Usage Tips
 
-## Requirements
-
-- [AutoHotkey v2.0+](https://www.autohotkey.com/)
-- [InputTip v2.39.0+](https://github.com/abgox/InputTip)
-- [CopyQ](https://hluk.github.io/CopyQ/) (Optional, for enhanced clipboard management)
-
-## Installation
-
-[详细安装步骤]
-
-## Configuration
-
-[配置说明]
-
-## Acknowledgments
-
-This plugin is built upon the excellent [InputTip](https://github.com/abgox/InputTip) project by [abgox](https://github.com/abgox). InputTip provides the essential foundation for caret detection and window management that makes this plugin possible.
-
-## License
-
-MIT License - See LICENSE file for details
+1. **First-time use**: CopyQ opens with protection OFF
+2. **Quick enable**: Click once in CopyQ to activate protection
+3. **Settings access**: Right-click to disable protection and access CopyQ settings
+4. **Quick dismiss**: Move mouse away or press any key to close
 
 ---
 
-## Contribution
+## 3. InputGuardian Plugin for InputTip - Text Versioning & Clipboard History
 
-Feel free to fork this repository, submit pull requests, or open issues for bugs, suggestions, or feature requests.
+**Version:** 1.0.0  
+**Last Updated:** 2025-08-11  
+**Script Link:** [InputGuardian-InputTip-plugin.ahk](InputGuardian-InputTip-plugin.ahk)
+
+### Description
+
+A sophisticated plugin for [InputTip](https://github.com/abgox/InputTip) that adds Git-style version control for your text input and maintains a comprehensive clipboard history. Think of it as having two digital assistants: a Librarian who versions your work, and a Historian who logs your references.
+
+### ✨ Key Features
+
+* **📚 The Librarian (Text Versioning)**
+  * Automatic snapshots on input pause (3 seconds)
+  * Proactive saves on Enter/Ctrl+Enter
+  * Git-style diff tracking for all changes
+  * Session-based organization by application
+  * Context-aware switching between windows
+
+* **📜 The Historian (Clipboard Logging)**
+  * Captures all manual copies (Ctrl+C)
+  * Daily Markdown logs with timestamps
+  * Intelligent de-duplication
+  * Path blocking for temporary files
+  * Clean separation from automated captures
+
+* **🧠 Intelligent Boundary Detection**
+  * Knows when YOU copy vs when IT captures
+  * Prevents clipboard pollution
+  * Smart validation of input contexts
+  * Failure recovery with exponential backoff
+
+* **🔄 Advanced Queue System**
+  * Asynchronous file writing
+  * Automatic retry on failures
+  * Memory caching as fallback
+  * Health monitoring and auto-recovery
+
+### 🔧 Configuration
+
+Update the `IGConfig` class in the plugin file:
+
+```autohotkey
+class IGConfig {
+    ; File paths
+    static HistoryBasePath := A_ScriptDir . "\InputGuardian\History"
+    static SessionsBasePath := A_ScriptDir . "\InputGuardian\Sessions"
+    static LogPath := A_ScriptDir . "\InputGuardian\Logs"
+    
+    ; CopyQ integration (optional)
+    static CopyQExePath := "D:\005_tools\CopyQ\copyq.exe"  ; Update this path
+    static UseCopyQ := true
+    
+    ; Behavior settings
+    static PauseDetectionTime := 3000   ; 3 seconds pause triggers save
+    static MinTextLength := 1            ; Minimum characters to save
+    static SnapshotCooldown := 2000     ; Cooldown between snapshots
+    
+    ; Path blocking for clipboard (screenshot tools, etc.)
+    static PathBlockList := [
+        {
+            prefix: "D:\005_tools\PixPin\Temp\PixPin_",  ; Update these paths
+            extension: ".png"
+        },
+        {
+            prefix: "D:\0000_bookmark\Picture_saving\Clip_",
+            extension: ".png"
+        }
+    ]
+}
+```
+
+### 📦 Dependencies
+
+* **Required**:
+  * AutoHotkey v2.0+
+  * [InputTip v2025.07.20+](https://github.com/abgox/InputTip) by abgox
+* **Optional**:
+  * CopyQ - Enhanced clipboard management
+  * Obsidian - For viewing Markdown logs
+
+### 📁 File Structure
+
+```
+InputGuardian/
+├── History/          # Daily clipboard logs (YYYY-MM-DD.md)
+├── Sessions/         # Text versioning sessions
+│   ├── Temp/        # Current session preview
+│   └── YYYY-MM-DD.md # Daily session logs with diffs
+└── Logs/            # System logs
+```
+
+### 🚀 Installation
+
+1. Install [InputTip](https://github.com/abgox/InputTip) first
+2. Place `InputGuardian-InputTip-plugin.ahk` in InputTip's plugins folder
+3. Configure paths in the IGConfig class
+4. Run InputTip.ahk (the plugin loads automatically)
+
+### 🏆 Acknowledgments
+
+Special thanks to [abgox](https://github.com/abgox) for creating InputTip, which provides the essential foundation for this plugin through its caret detection and window management systems.
+
+---
+
+## 🎯 Quick Start Guide
+
+### Basic Setup (Minimal Configuration)
+
+1. **Install AutoHotkey v2.0+** from [autohotkey.com](https://www.autohotkey.com/)
+
+2. **Run Base_logi.ahk** for core productivity features
+   - Update tool paths if using PasteEx/CapsWriter
+   - Works standalone for basic hotkeys
+
+3. **Add CopyQ integration** (if using CopyQ)
+   - Install [CopyQ](https://hluk.github.io/CopyQ/)
+   - Run `CopyQ-AntiDrag-PinnedHandler.ahk`
+
+4. **Enable advanced features** (optional)
+   - Install [InputTip](https://github.com/abgox/InputTip)
+   - Add InputGuardian plugin for text versioning
+
+### Recommended Setup Order
+
+```
+1. Base_logi.ahk              (Core system)
+   ↓
+2. CopyQ + Handler script      (Clipboard enhancement)
+   ↓
+3. InputTip + InputGuardian    (Advanced text features)
+```
+
+---
+
+## 🤝 Contributing
+
+Contributions are welcome! Feel free to:
+- Fork the repository
+- Submit pull requests
+- Open issues for bugs or feature requests
+- Share your configuration tips
+
+## 📄 License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+## 🔗 Links
+
+- **Repository**: [GitHub](https://github.com/ssaerwgf/AHK-CopyQ-AntiDrag-PinnedHandler-ObsidianMDLogger)
+- **AutoHotkey Community**: [Forum Thread](https://www.autohotkey.com/boards/viewtopic.php?f=83&t=137459)
+- **Dependencies**:
+  - [AutoHotkey](https://www.autohotkey.com/)
+  - [InputTip](https://github.com/abgox/InputTip) by abgox
+  - [CopyQ](https://hluk.github.io/CopyQ/)
+
+---
+
+*Made with ❤️ for the AutoHotkey community*
